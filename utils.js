@@ -11,6 +11,9 @@ const dayjs = require('dayjs')
  */
 function getDiscountRate(product) {
   // 請實作此函式
+  if (!product.origin_price || product.price >= product.origin_price) {
+    return '無折扣'
+  }
   const rate = Math.round((product.price / product.origin_price) * 10)
   return `${rate}折`
 }
@@ -70,7 +73,7 @@ function getDaysAgo(timestamp) {
 function validateOrderUser(data) {
   // 請實作此函式
   const errors = []
-  if (!data.name) errors.push('姓名不可為空')
+  if (!data.name || !data.name.trim()) errors.push('姓名不可為空')
   if (!/^09\d{8}$/.test(data.tel)) errors.push('電話必須是 09 開頭的 10 位數字')
   if (!/@/.test(data.email)) errors.push('Email 必須包含 @ 符號')
   if (!data.address) errors.push('地址不可為空')
